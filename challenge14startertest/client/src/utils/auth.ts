@@ -1,31 +1,32 @@
 import { JwtPayload, jwtDecode } from 'jwt-decode';
 
-class AuthService {
-  getProfile() {
-    // TODO: return the decoded token
+class Auth {
+  getToken(): string | null {
+    return localStorage.getItem('jwt') || null;
   }
 
-  loggedIn() {
-    // TODO: return a value that indicates if the user is logged in
-  }
-  
-  isTokenExpired(token: string) {
-    // TODO: return a value that indicates if the token is expired
-  }
-
-  getToken(): string {
-    // TODO: return the token
+  isTokenExpired(token: string): boolean {
+    try {
+      const decoded = jwtDecode<JwtPayload>(token);
+      return decoded.exp ? Date.now() >= decoded.exp * 1000 : false;
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return true;
+    }
   }
 
-  login(idToken: string) {
-    // TODO: set the token to localStorage
-    // TODO: redirect to the home page
+  loggedIn(): boolean {
+    const token = this.getToken();
+    return !!token && !this.isTokenExpired(token);
   }
 
-  logout() {
-    // TODO: remove the token from localStorage
-    // TODO: redirect to the login page
+  login(idToken: string): void {
+    localStorage.setItem('jwt', idToken);
+  }
+
+  logout(): void {
+    localStorage.removeItem('jwt');
   }
 }
 
-export default new AuthService();
+export default new Auth();

@@ -1,9 +1,23 @@
-import { UserLogin } from "../interfaces/UserLogin";
-
-const login = async (userInfo: UserLogin) => {
-  // TODO: make a POST request to the login route
+export interface UserLogin {
+  username: string;
+  password: string;
 }
 
+export const login = async (userInfo: UserLogin) => {
+  try {
+    const response = await fetch('/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userInfo),
+    });
 
+    if (!response.ok) {
+      throw new Error('Login failed.');
+    }
 
-export { login };
+    return await response.json(); // Returns the data (e.g., token)
+  } catch (error) {
+    console.error('Error during login:', error);
+    throw error;
+  }
+};
