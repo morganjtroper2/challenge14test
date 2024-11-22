@@ -14,7 +14,7 @@ const Login = () => {
       const data = await login({ username, password });
       if (data.token) {
         Auth.login(data.token);
-        window.location.assign('/board'); // Redirect to the board
+        window.location.assign('/board');
       }
     } catch (err) {
       setError('Invalid username or password.');
