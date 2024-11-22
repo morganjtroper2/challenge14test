@@ -8,9 +8,10 @@ const Board = () => {
 
   return (
     <div>
+      
       <h1>Kanban Board</h1>
       <p>Welcome to your Kanban Board!</p>
-      {//}
+      
     </div>
   );
 };
